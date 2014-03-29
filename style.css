@@ -1,0 +1,25 @@
+
+*, *:before, *:after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.main-container {
+    display: block;
+    width: 100%;
+    background: yellow;
+    padding: 10px;
+}
+
+.group-conditions {
+    background: red;
+    border: 1px solid blue;
+    margin: 5px;
+}
+
+.condition {
+    display: block;
+    background: orange;
+    margin: 5px;
+}
