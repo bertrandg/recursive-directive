@@ -71,9 +71,6 @@ $border_radius_custom: 4px;
 			cursor: move;
 		}
 		
-		&.drop-in-progress {
-			background: yellow;
-		}
 	}
 	
 	.options {
@@ -93,7 +90,7 @@ $border_radius_custom: 4px;
 		color: #ffffff;
 		
 		&.drag-in-progress {
-			opacity: .5;
+			background: pink;
 		}
 		
 	}
@@ -101,6 +98,18 @@ $border_radius_custom: 4px;
 	.drag-in-progress {
 		pointer-events: none;
 		background: green;
+	}
+	
+	.drop-in-progress {
+		background: yellow;
+		border: 4px dashed blue;
+		
+		&:after {
+			display: block;
+			width: 50px;
+			height: 50px;
+			background: blue;
+		}
 	}
 	
 	.li-condition,

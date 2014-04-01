@@ -65,7 +65,7 @@ appTest.directive("groupConditions", function($compile) {
 	        		<li ng-repeat="group in data.groups" class="li-group">\
 	            		<group-conditions data="group"\
         								  delete-please="deleteGroup(id)"\
-        	 							  b-dragging="bDragging">\
+        	 							  b-dragging="bDragging" drop="group.id">\
 	                		<div ng-transclude></div>\
 	                	</group-conditions>\
 	                </li>\
@@ -91,9 +91,6 @@ appTest.directive("groupConditions", function($compile) {
             };
         },
         controller: function($scope, $rootScope) {
-        	console.log('CONTROLLER $scope.bDragging = ', $scope.bDragging);
-        	
-        	
 			var critereModel = {type: 'datapoint', data: {name: 'toto datapoint', delay: 30}};
 			var segmentModel = {type: 'segment', data: {name: 'segment de la muerte'}};
 			var groupModel = {conditions: [], groups: []};
@@ -148,7 +145,7 @@ appTest.directive('condition', function() {
 			position: '=',
 			type: '=',
 			data: '=',
-			deletePlease: '&',
+			deletePlease: '&'
 	    },
 	    template: '<div class="condition form-inline">\
   		  			  <span class="glyphicon glyphicon-hand-right"></span>\
@@ -166,18 +163,9 @@ appTest.directive('condition', function() {
 
 
 appTest.directive("drag", ["$rootScope", function($rootScope) {
-	  
-	function dragStart(evt, element) {
-		element.addClass('drag-in-progress');
-		evt.originalEvent.dataTransfer.setData("id", evt.target.id);
-		evt.originalEvent.dataTransfer.effectAllowed = 'move';
-	};
-	function dragEnd(evt, element) {
-		element.removeClass('drag-in-progress');
-	};
-
 	return {
 		restrict: 'A',
+		scope: false,
 		link: function(scope, element, attrs)  {
 			attrs.$set('draggable', 'true');
 			scope.dragData = scope[attrs["drag"]];
@@ -186,15 +174,61 @@ appTest.directive("drag", ["$rootScope", function($rootScope) {
 				scope.$apply(function() {
 		    		$rootScope.drag.operationInProgress = true;
 		    		$rootScope.drag.draggedElement = scope.dragData;
-		    		dragStart(evt, element);
+		    		element.addClass('drag-in-progress');
 		    	});
+				
+				var dragIcon = document.createElement('img');
+				dragIcon.src = 'https://lh3.googleusercontent.com/-4QogQ4rqOWU/AAAAAAAAAAI/AAAAAAAAK4o/bD6zRy2VgJU/photo.jpg';
+				evt.originalEvent.dataTransfer.setDragImage(dragIcon, 128, 128);
+				
+				evt.originalEvent.dataTransfer.setData("id", evt.target.id);
+				evt.originalEvent.dataTransfer.dropEffect = 'move';
+				//evt.originalEvent.dataTransfer.effectAllowed = 'none';
 			});
 			
 			element.bind('dragend', function(evt) {
 				scope.$apply(function() {
 					$rootScope.drag.operationInProgress = false;
-					dragEnd(evt, element);
+					element.removeClass('drag-in-progress');
 				});
+			});
+		}
+	}
+}]);
+
+appTest.directive("drop", ['$rootScope', function($rootScope) {
+	return {
+		restrict: 'A',
+		scope: false,
+		link: function(scope, element, attrs)  {
+			scope.dropData = scope[attrs['drop']];
+			
+			element.bind('dragenter', function(evt) {			console.log('dragenter');
+				scope.$apply(function() {
+					element.addClass('drop-in-progress');
+				});
+				evt.preventDefault();
+				return false;
+			});
+			
+			element.bind('dragleave', function(evt) {			console.log('dragleave');
+				scope.$apply(function() {
+					element.removeClass('drop-in-progress');
+				});
+			});
+			
+			element.bind('dragover', function(evt) {			console.log('dragover');
+				evt.preventDefault();
+				return false;
+			});
+			
+			element.bind('drop', function(evt) {			console.log('drop');
+				scope.$apply(function() {
+					element.removeClass('drop-in-progress');
+					$rootScope.$broadcast('dropEvent', $rootScope.drag.draggedElement, scope.dropData);
+				});
+				evt.preventDefault();
+				return false;
 			});
 		}
 	}

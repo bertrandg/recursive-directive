@@ -161,8 +161,6 @@
       float: right; }
     .main-container .group-conditions span.glyphicon-hand-right {
       cursor: move; }
-    .main-container .group-conditions.drop-in-progress {
-      background: yellow; }
   .main-container .options p,
   .main-container .options button {
     display: inline-block; }
@@ -175,10 +173,18 @@
     background: #63535B;
     color: #ffffff; }
     .main-container .condition.drag-in-progress {
-      opacity: .5; }
+      background: pink; }
   .main-container .drag-in-progress {
     pointer-events: none;
     background: green; }
+  .main-container .drop-in-progress {
+    background: yellow;
+    border: 4px dashed blue; }
+    .main-container .drop-in-progress:after {
+      display: block;
+      width: 50px;
+      height: 50px;
+      background: blue; }
   .main-container .li-condition.ng-enter,
   .main-container .li-group.ng-enter {
     -webkit-animation: fadeInRight 0.4s;
