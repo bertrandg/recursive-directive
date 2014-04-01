@@ -1,0 +1,118 @@
+
+$border_radius_custom: 4px;
+
+@mixin animation($properties) {
+    -webkit-animation: $properties;
+    -moz-animation: $properties;
+    -ms-animation: $properties;
+    -o-animation: $properties;
+    animation: $properties;
+}
+
+@mixin transition($properties...) {
+    -webkit-transition: $properties;
+    -moz-transition: $properties;
+    -ms-transition: $properties;
+    -o-transition: $properties;
+    transition: $properties;
+}
+
+@mixin box-shadow($properties...) {
+	-moz-box-shadow: $properties;
+	-webkit-box-shadow: $properties;
+	-o-box-shadow: $properties;
+	box-shadow: $properties;
+}
+
+
+/***********************************************************************/
+
+.main-container {
+	display: block;
+	width: 100%;
+	//background: yellow;
+	padding: 10px;
+	
+	ul {
+		list-style: none;
+		padding: 0;
+		margin: 0 0 0 20px;
+	}
+	
+	.group-conditions {
+		display: block;
+		min-height: 60px;
+		border-radius: $border_radius_custom;
+		margin: 5px;
+		padding: 5px;
+		
+		$color_start: #f5f3f4;
+		@for $i from 0 through 15 {
+			$darken_value: min(($i + 1) * 6, 100);
+			$darken_value_more: min($darken_value + 8, 100);
+			$darken_value_more_more: min($darken_value + 20, 100);
+			
+			&.level-#{$i} {
+				background: darken($color_start, $darken_value);
+				border: 1px solid darken($color_start, $darken_value_more);
+				@include box-shadow(inset 0px 0px 10px 0px darken($color_start, $darken_value_more_more));
+				
+				.options {
+					border-bottom: 1px solid darken($color_start, $darken_value_more);
+				}
+			}
+		}
+		
+		button.btn-danger {
+			float: right;
+		}
+		
+		span.glyphicon-hand-right {
+			cursor: move;
+		}
+		
+		&.drop-in-progress {
+			background: yellow;
+		}
+	}
+	
+	.options {
+		p,
+		button {
+			display: inline-block;
+		}
+	}
+	
+	.condition {
+		display: block;
+		margin: 5px;
+		padding: 5px;
+		border-radius: $border_radius_custom;
+		border: 1px solid darken(#63535B, 15);
+		background: #63535B;
+		color: #ffffff;
+		
+		&.drag-in-progress {
+			opacity: .5;
+		}
+		
+	}
+	
+	.drag-in-progress {
+		pointer-events: none;
+		background: green;
+	}
+	
+	.li-condition,
+	.li-group {
+		&.ng-enter {
+			@include animation(fadeInRight 0.4s);
+			
+		}
+		&.ng-leave {
+			@include animation(fadeOutLeft 0.2s);
+		}
+	}
+}
+
+

@@ -70,7 +70,7 @@ appTest.directive('groupConditions', function($compile) {
 		link: function(scope, element, attrs) {
 			var groupsElement = angular.element('\
 	          <div class="group-conditions level-{{ data.level  }}" drop>\
-	            <div class="options" ng-class="{\'drag-in-progress\': dragInProgress}" \>\
+	            <div class="options" ng-class="{\'drag-in-progress\': drag.inProgress}" \>\
 	    		  <span class="glyphicon glyphicon-hand-right"></span>\
 	              <p>GROUPE LEVEL {{ data.level+ \' - \' + data.id }}</p>\
 	              <button ng-click="addCritere()" class="btn btn-xs btn-primary">+CRITERE</button>\
@@ -83,7 +83,7 @@ appTest.directive('groupConditions', function($compile) {
 	            <ul>\
 	              <li ng-repeat="condition in data.conditions" \
 		    		  class="li-condition" \
-		    		  ng-class="{\'drag-in-progress\': dragInProgress}" \
+		    		  ng-class="{\'drag-in-progress\': drag.inProgress}" \
 		    		  drag="condition">\
 	                <condition  position="$index"\
 	                            id="condition.id"\
@@ -97,9 +97,21 @@ appTest.directive('groupConditions', function($compile) {
 	              </li>\
 	            </ul>\
 	          </div>');
+			console.log('COMPILATION DE ', scope.data.id, ' > ', scope);
       
-			$compile(groupsElement)(scope);
-			element.append(groupsElement);
+//			$compile(groupsElement)(scope);
+//			element.append(groupsElement);
+			
+
+	        //compile the view into a function.
+	        var compiled = $compile(groupsElement);
+
+	        //append our view to the element of the directive.
+	        element.append(groupsElement);
+
+	        //bind our view to the scope!
+	        //(try commenting out this line to see what happens!)
+	        compiled(scope);
 	    },
 	    controller: function($scope, $rootScope) {
 			  
@@ -107,12 +119,21 @@ appTest.directive('groupConditions', function($compile) {
 			var segmentModel = {type: 'segment', data: {name: 'segment de la muerte'}};
 			var groupModel = {conditions: [], groups: []};
 			
-            $scope.dragInProgress = false;
-            $rootScope.$on('dragInProgress', function(event, value) {
+            $scope.drag = {
+        		inProgress: false
+            };
+            
+            var cleanup = $rootScope.$on('dragInProgress', function(event, value) {
             	console.log($scope.data.id + ' - dragInProgress = ', value);
-            	$scope.dragInProgress = value;
+            	
+            	$scope.$apply(function() {
+            		$scope.drag.inProgress = value;
+            	});
             });
-                
+            
+            $scope.$on('$destroy', function() {
+				cleanup();
+			});
 			
 			$scope.addCritere = function() {
 				var data = angular.copy(critereModel);
@@ -172,12 +193,17 @@ appTest.directive('condition', function() {
 	                  <input type="text" class="form-control input-sm" name="condition"/>\
 	                  <button ng-click="deletePlease({id: id})" class="btn btn-sm btn-danger">DELETE</button>\
 	              </div>',
-	    controller: function($scope) {
-	    	
+	    controller: function($scope, $rootScope) {
 	    },
-	    link: function(scope, element, attrs) {}
+	    link: function(scope, element, attrs) {
+	    	
+	    }
   };
 });
+
+
+
+
 
 appTest.directive("drag", ["$rootScope", function($rootScope) {
 	  
@@ -197,16 +223,12 @@ appTest.directive("drag", ["$rootScope", function($rootScope) {
 			scope.dragData = scope[attrs["drag"]];
 			
 			element.bind('dragstart', function(evt) {
-//				console.log('dragstart > ', scope);
-//				$rootScope.drag.operationInProgress = true;
 				$rootScope.$broadcast('dragInProgress', true);
 				$rootScope.drag.draggedElement = scope.dragData;
 				dragStart(evt, element);
 			});
 			
 			element.bind('dragend', function(evt) {
-//				console.log('dragend');
-//				$rootScope.drag.operationInProgress = false;
 				$rootScope.$broadcast('dragInProgress', false);
 				dragEnd(evt, element);
 			});

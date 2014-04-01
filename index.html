@@ -27,16 +27,42 @@
         
         <div class="container">
             
-            <div class="starter-template">
+			<div class="starter-template">
 <!--                 <h1>Bootstrap starter template</h1> -->
 <!--                 <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p> -->
             </div>
             
-              <div ng-app="appTest">
-                <div ng-controller="MainController" class="main-container">
+			<div ng-app="appTest">
+            	<div ng-controller="MainController" class="main-container">
                 
-                  <h1>Segment builder {{ titi }}</h1>
-                  <group-conditions data="dataMainGroup"></group-conditions>
+	                <h1>Segment builder > {{ titi }}</h1>
+	                
+					<group-conditions data="dataMainGroup" b-dragging="drag.operationInProgress">
+					
+						<div class="options" ng-class="{'drag-in-progress': bDragging}">
+							<span class="glyphicon glyphicon-hand-right"></span>
+							<p>GROUPE LEVEL {{ data.level + ' - ' + data.id }}</p>
+							<button ng-click="addCritere()" class="btn btn-xs btn-primary">+CRITERE</button>
+							<button ng-click="addSegment()" class="btn btn-xs btn-primary">+SEGMENT</button>
+							<button ng-click="addGroup()" class="btn btn-xs btn-primary">+GROUP</button>
+							<button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger" ng-if="data.level > 0">DELETE</button>
+			            </div>
+						
+						<ul>
+							<li ng-repeat="condition in data.conditions" 
+								class="li-condition" 
+								ng-class="{'drag-in-progress': bDragging}">
+								
+		                		<condition  position="$index" 
+					                		id="condition.id" 
+					                		type="condition.type" 
+					                		data="condition.data" 
+					                		delete-please="deleteCondition(id)"
+					                		drag="condition"></condition>
+							</li>
+						</ul>
+		                
+					</group-conditions>
                   
                 </div>
               </div>
@@ -48,6 +74,6 @@
         <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="libs/angular/angular.min.js"></script>
         <script src="libs/angular-animate/angular-animate.min.js"></script>
-        <script src="script.js"></script>
+        <script src="script2.js"></script>
     </body>
 </html>
