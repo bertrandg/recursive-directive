@@ -1,25 +1,194 @@
-
-*, *:before, *:after {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
 .main-container {
+  display: block;
+  width: 100%;
+  padding: 10px; }
+  .main-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 20px; }
+  .main-container .group-conditions {
     display: block;
-    width: 100%;
-    background: yellow;
-    padding: 10px;
-}
-
-.group-conditions {
-    background: red;
-    border: 1px solid blue;
+    min-height: 60px;
+    border-radius: 4px;
     margin: 5px;
-}
-
-.condition {
+    padding: 5px; }
+    .main-container .group-conditions.level-0 {
+      background: #e7e2e5;
+      border: 1px solid #d5ccd0;
+      -moz-box-shadow: inset 0px 0px 10px 0px #b9abb2;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #b9abb2;
+      -o-box-shadow: inset 0px 0px 10px 0px #b9abb2;
+      box-shadow: inset 0px 0px 10px 0px #b9abb2; }
+      .main-container .group-conditions.level-0 .options {
+        border-bottom: 1px solid #d5ccd0; }
+    .main-container .group-conditions.level-1 {
+      background: #d9d2d5;
+      border: 1px solid #c7bbc1;
+      -moz-box-shadow: inset 0px 0px 10px 0px #ab9aa2;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #ab9aa2;
+      -o-box-shadow: inset 0px 0px 10px 0px #ab9aa2;
+      box-shadow: inset 0px 0px 10px 0px #ab9aa2; }
+      .main-container .group-conditions.level-1 .options {
+        border-bottom: 1px solid #c7bbc1; }
+    .main-container .group-conditions.level-2 {
+      background: #cbc1c6;
+      border: 1px solid #b9abb2;
+      -moz-box-shadow: inset 0px 0px 10px 0px #9d8993;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #9d8993;
+      -o-box-shadow: inset 0px 0px 10px 0px #9d8993;
+      box-shadow: inset 0px 0px 10px 0px #9d8993; }
+      .main-container .group-conditions.level-2 .options {
+        border-bottom: 1px solid #b9abb2; }
+    .main-container .group-conditions.level-3 {
+      background: #bdb0b7;
+      border: 1px solid #ab9aa2;
+      -moz-box-shadow: inset 0px 0px 10px 0px #8f7984;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #8f7984;
+      -o-box-shadow: inset 0px 0px 10px 0px #8f7984;
+      box-shadow: inset 0px 0px 10px 0px #8f7984; }
+      .main-container .group-conditions.level-3 .options {
+        border-bottom: 1px solid #ab9aa2; }
+    .main-container .group-conditions.level-4 {
+      background: #afa0a8;
+      border: 1px solid #9d8993;
+      -moz-box-shadow: inset 0px 0px 10px 0px #7f6a75;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #7f6a75;
+      -o-box-shadow: inset 0px 0px 10px 0px #7f6a75;
+      box-shadow: inset 0px 0px 10px 0px #7f6a75; }
+      .main-container .group-conditions.level-4 .options {
+        border-bottom: 1px solid #9d8993; }
+    .main-container .group-conditions.level-5 {
+      background: #a28f98;
+      border: 1px solid #8f7984;
+      -moz-box-shadow: inset 0px 0px 10px 0px #6e5c65;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #6e5c65;
+      -o-box-shadow: inset 0px 0px 10px 0px #6e5c65;
+      box-shadow: inset 0px 0px 10px 0px #6e5c65; }
+      .main-container .group-conditions.level-5 .options {
+        border-bottom: 1px solid #8f7984; }
+    .main-container .group-conditions.level-6 {
+      background: #947e89;
+      border: 1px solid #7f6a75;
+      -moz-box-shadow: inset 0px 0px 10px 0px #5e4e56;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #5e4e56;
+      -o-box-shadow: inset 0px 0px 10px 0px #5e4e56;
+      box-shadow: inset 0px 0px 10px 0px #5e4e56; }
+      .main-container .group-conditions.level-6 .options {
+        border-bottom: 1px solid #7f6a75; }
+    .main-container .group-conditions.level-7 {
+      background: #856f7a;
+      border: 1px solid #6e5c65;
+      -moz-box-shadow: inset 0px 0px 10px 0px #4d4047;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #4d4047;
+      -o-box-shadow: inset 0px 0px 10px 0px #4d4047;
+      box-shadow: inset 0px 0px 10px 0px #4d4047; }
+      .main-container .group-conditions.level-7 .options {
+        border-bottom: 1px solid #6e5c65; }
+    .main-container .group-conditions.level-8 {
+      background: #74616a;
+      border: 1px solid #5e4e56;
+      -moz-box-shadow: inset 0px 0px 10px 0px #3c3237;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #3c3237;
+      -o-box-shadow: inset 0px 0px 10px 0px #3c3237;
+      box-shadow: inset 0px 0px 10px 0px #3c3237; }
+      .main-container .group-conditions.level-8 .options {
+        border-bottom: 1px solid #5e4e56; }
+    .main-container .group-conditions.level-9 {
+      background: #63535b;
+      border: 1px solid #4d4047;
+      -moz-box-shadow: inset 0px 0px 10px 0px #2c2428;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #2c2428;
+      -o-box-shadow: inset 0px 0px 10px 0px #2c2428;
+      box-shadow: inset 0px 0px 10px 0px #2c2428; }
+      .main-container .group-conditions.level-9 .options {
+        border-bottom: 1px solid #4d4047; }
+    .main-container .group-conditions.level-10 {
+      background: #53454c;
+      border: 1px solid #3c3237;
+      -moz-box-shadow: inset 0px 0px 10px 0px #1b1619;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #1b1619;
+      -o-box-shadow: inset 0px 0px 10px 0px #1b1619;
+      box-shadow: inset 0px 0px 10px 0px #1b1619; }
+      .main-container .group-conditions.level-10 .options {
+        border-bottom: 1px solid #3c3237; }
+    .main-container .group-conditions.level-11 {
+      background: #42373c;
+      border: 1px solid #2c2428;
+      -moz-box-shadow: inset 0px 0px 10px 0px #0a0909;
+      -webkit-box-shadow: inset 0px 0px 10px 0px #0a0909;
+      -o-box-shadow: inset 0px 0px 10px 0px #0a0909;
+      box-shadow: inset 0px 0px 10px 0px #0a0909; }
+      .main-container .group-conditions.level-11 .options {
+        border-bottom: 1px solid #2c2428; }
+    .main-container .group-conditions.level-12 {
+      background: #31292d;
+      border: 1px solid #1b1619;
+      -moz-box-shadow: inset 0px 0px 10px 0px black;
+      -webkit-box-shadow: inset 0px 0px 10px 0px black;
+      -o-box-shadow: inset 0px 0px 10px 0px black;
+      box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-12 .options {
+        border-bottom: 1px solid #1b1619; }
+    .main-container .group-conditions.level-13 {
+      background: #211b1e;
+      border: 1px solid #0a0909;
+      -moz-box-shadow: inset 0px 0px 10px 0px black;
+      -webkit-box-shadow: inset 0px 0px 10px 0px black;
+      -o-box-shadow: inset 0px 0px 10px 0px black;
+      box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-13 .options {
+        border-bottom: 1px solid #0a0909; }
+    .main-container .group-conditions.level-14 {
+      background: #100d0e;
+      border: 1px solid black;
+      -moz-box-shadow: inset 0px 0px 10px 0px black;
+      -webkit-box-shadow: inset 0px 0px 10px 0px black;
+      -o-box-shadow: inset 0px 0px 10px 0px black;
+      box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-14 .options {
+        border-bottom: 1px solid black; }
+    .main-container .group-conditions.level-15 {
+      background: black;
+      border: 1px solid black;
+      -moz-box-shadow: inset 0px 0px 10px 0px black;
+      -webkit-box-shadow: inset 0px 0px 10px 0px black;
+      -o-box-shadow: inset 0px 0px 10px 0px black;
+      box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-15 .options {
+        border-bottom: 1px solid black; }
+    .main-container .group-conditions button.btn-danger {
+      float: right; }
+    .main-container .group-conditions span.glyphicon-hand-right {
+      cursor: move; }
+    .main-container .group-conditions.drop-in-progress {
+      background: yellow; }
+  .main-container .options p,
+  .main-container .options button {
+    display: inline-block; }
+  .main-container .condition {
     display: block;
-    background: orange;
     margin: 5px;
-}
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #393035;
+    background: #63535B;
+    color: #ffffff; }
+    .main-container .condition.drag-in-progress {
+      opacity: .5; }
+  .main-container .drag-in-progress {
+    pointer-events: none;
+    background: green; }
+  .main-container .li-condition.ng-enter,
+  .main-container .li-group.ng-enter {
+    -webkit-animation: fadeInRight 0.4s;
+    -moz-animation: fadeInRight 0.4s;
+    -ms-animation: fadeInRight 0.4s;
+    -o-animation: fadeInRight 0.4s;
+    animation: fadeInRight 0.4s; }
+  .main-container .li-condition.ng-leave,
+  .main-container .li-group.ng-leave {
+    -webkit-animation: fadeOutLeft 0.2s;
+    -moz-animation: fadeOutLeft 0.2s;
+    -ms-animation: fadeOutLeft 0.2s;
+    -o-animation: fadeOutLeft 0.2s;
+    animation: fadeOutLeft 0.2s; }
