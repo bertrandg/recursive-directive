@@ -162,6 +162,8 @@
       float: right; }
     .main-container .group-conditions span.glyphicon-hand-right {
       cursor: move; }
+    .main-container .group-conditions .empty-group {
+      text-align: center; }
   .main-container .options p,
   .main-container .options button {
     display: inline-block; }
@@ -173,6 +175,9 @@
     border: 1px solid #393035;
     background: #63535B;
     color: #ffffff; }
+    .main-container .condition input,
+    .main-container .condition select {
+      width: 120px; }
     .main-container .condition.drag-in-progress {
       background: pink; }
   .main-container .drag-in-progress {
@@ -205,5 +210,5 @@
 
 span.special-info {
   position: absolute;
-  left: -260px;
+  left: -300px;
   background: yellow; }

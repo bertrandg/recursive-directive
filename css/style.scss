@@ -73,6 +73,9 @@ $border_radius_custom: 4px;
             cursor: move;
         }
         
+        .empty-group {
+            text-align: center;
+        }
     }
     
     .options {
@@ -90,6 +93,11 @@ $border_radius_custom: 4px;
         border: 1px solid darken(#63535B, 15);
         background: #63535B;
         color: #ffffff;
+        
+        input,
+        select {
+	        width: 120px;
+        }
         
         &.drag-in-progress {
             background: pink;
@@ -132,7 +140,7 @@ $border_radius_custom: 4px;
 
 span.special-info {
     position: absolute;
-    left: -260px;
+    left: -300px;
     
     background: yellow;
 }
