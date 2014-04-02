@@ -199,3 +199,7 @@
     -ms-animation: fadeOutLeft 0.2s;
     -o-animation: fadeOutLeft 0.2s;
     animation: fadeOutLeft 0.2s; }
+
+span.special-info {
+  position: absolute;
+  left: -300px; }

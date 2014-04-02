@@ -1,4 +1,6 @@
 
+// http://sporto.github.io/blog/2013/06/24/nested-recursive-directives-in-angular/
+
 var appTest = angular.module('appTest', ['ngAnimate']);
 
 appTest.controller('MainController', function($scope, $rootScope) {
@@ -12,12 +14,14 @@ appTest.controller('MainController', function($scope, $rootScope) {
 	
 	$scope.dataMainGroup = {
 		level: 0,
+		position: 1,
 		type: 'group',
 		id: 'group35848',
 		relation: 'and',
-		group: [
+		elements: [
 		    {
 		    	level: 1,
+		    	position: 1,
 		    	type: 'datapoint',
 		    	id: 'datapoint65848',
 		    	datapoint: {id: '754564', name: 'Gender', code: 'v.f.g', price: 60000},
@@ -30,37 +34,43 @@ appTest.controller('MainController', function($scope, $rootScope) {
 		    },
 		    {
 		    	level: 1,
+		    	position: 4,
 		    	type: 'group',
 		    	id: 'group8979',
 		    	relation: 'or',
-		    	group: [
+		    	elements: [
 		    	    {
 		    	    	level: 2,
+		    	    	position: 6,
 		    	    	type: 'group',
 		    	    	id: 'group2316',
 		    	    	relation: 'and',
-		    	    	group: []
+		    	    	elements: []
 		    	    },
 		    	    {
 		    	    	level: 2,
+		    	    	position: 4,
 		    	    	type: 'segment',
 		    	    	id: 'segment871528',
 		    	    	segment: {id: '847616', name: 'segment de la muerte', price: 84000}
 		    	    },
 		    	    {
 		    	    	level: 2,
+		    	    	position: 1,
 		    	    	type: 'group',
 		    	    	id: 'group21384',
 		    	    	relation: 'or',
-		    	    	group: [
+		    	    	elements: [
 		    	    	    {
 		    	    	    	level: 3,
+		    	    	    	position: 1,
 		    	    	    	type: 'segment',
 		    	    	    	id: 'segment819954',
 		    	    	    	segment: {id: '51655', name: 'the segment xyz', price: 9100}
 		    	    	    },
 		    	    	    {
 		    	    	    	level: 3,
+		    	    	    	position: 3,
 		    	    	    	type: 'datapoint',
 		    	    	    	id: 'datapoint87195',
 		    	    	    	datapoint: {id: '54159', name: 'Keyword', code: 's.w.w', price: 156000},
@@ -77,20 +87,23 @@ appTest.controller('MainController', function($scope, $rootScope) {
 		    },
 		    {
 		    	level: 1,
+		    	position: 2,
 		    	type: 'segment',
 		    	id: 'segment8944',
 		    	segment: {id: '7568468', name: 'mon segment toto', price: 42000}
 		    },
 		    {
 		    	level: 1,
+		    	position: 3,
 		    	type: 'group',
 		    	id: 'group54614',
 		    	level: 1,
 		    	relation: 'and',
-		    	group: []
+		    	elements: []
 		    },
 		    {
 		    	level: 1,
+		    	position: 12,
 		    	type: 'datapoint',
 		    	id: 'datapoint68789',
 		    	datapoint: {id: '7413235', name: 'Browser', code: 's.w.b', price: 10000},
@@ -109,189 +122,102 @@ appTest.controller('MainController', function($scope, $rootScope) {
 
 
 
-appTest.directive("groupConditions", function($compile) {
+appTest.directive("segmentBuilderGroup", function($compile) {
+	return {
+		restrict: "E",
+		replace: true,
+		scope: {
+			data: '=',
+			deletePlease: '&'
+		},
+		template:  '<li class="li-group">\
+						<div class="options">\
+							<h3>GROUP: {{ data.id }}</h3>\
+						</div>\
+						<ul>\
+							<li ng-repeat="element in data.elements"\
+								ng-class="{true:\'group-conditions level-1\', false:\'li-condition\'}[element.type == \'group\']">\
+								<span class="special-info">LEVEL {{ element.level }} > POSITION: {{ element.position + \'(\' + element.type + \')\' }}</span>\
+								<div ng-switch="element.type">\
+									<div ng-switch-when="segment">\
+										<segment-builder-segment data="element"></segment-builder-segment>\
+									</div>\
+									<div ng-switch-when="datapoint">\
+										<segment-builder-datapoint data="element"></segment-builder-datapoint>\
+									</div>\
+									<div ng-switch-when="group">\
+										<segment-builder-element data="element"></segment-builder-element>\
+									</div>\
+								</div>\
+							</li>\
+						</ul>\
+					</li>',
+	};
+});
+
+appTest.directive("segmentBuilderElement", function($compile) {
     return {
         restrict: "E",
         //We are stating here the HTML in the element the directive is applied to is going to be given to the template with a ng-transclude directive to be compiled when processing the directive
-        transclude: true,
-		terminal: true,
+        replace: true,
         scope: {
         	data: '=',
-			deletePlease: '&',
-			bDragging: '='
+			deletePlease: '&'
         },
-        template: '\
-        	<div class="group-conditions">\
-	        	<div ng-transclude></div>\
-	            <ul>\
-	        		<li ng-repeat="group in data.groups" class="li-group">\
-	            		<group-conditions data="group"\
-        								  delete-please="deleteGroup(id)"\
-        	 							  b-dragging="bDragging" drop="group.id">\
-	                		<div ng-transclude></div>\
-	                	</group-conditions>\
-	                </li>\
-	            </ul>\
-            <div>',
-        compile: function(tElement, tAttr, transclude) {
-            // We are removing the contents/innerHTML from the element we are going to be applying the  directive to and saving it to adding it below to the $compile call as the template
-            var contents = tElement.contents().remove();
-            var compiledContents;
-            
-            return function(scope, iElement, iAttr) {
-                if(!compiledContents) {
-                    //Get the link function with the contents frome top level template with the transclude
-                    compiledContents = $compile(contents, transclude);
-                }
-                // Call the link function to link the given scope and a Clone Attach Function, http://docs.angularjs.org/api/ng.$compile :
-                // "Calling the linking function returns the element of the template. It is either the original element passed in, or the clone of the element if the cloneAttachFn is provided."
-                compiledContents(scope, function(clone, scope) {
-                    //Appending the cloned template to the instance element, "iElement", on which the directive is to used.
-                	iElement.append(clone); 
-                    iElement.find('.group-conditions').addClass('level-' + scope.data.level);
-                });
-            };
+        template: '',
+        link: function (scope, element, attrs) {
+        	
+        	var collectionSt = '<segment-builder-group data="data"></segment-builder-group>';
+			if (angular.isArray(scope.data.elements)) {       
+              
+				$compile(collectionSt)(scope, function(cloned, scope)   {
+					element.append(cloned); 
+				});
+			}
+        	
         },
         controller: function($scope, $rootScope) {
-			var critereModel = {type: 'datapoint', data: {name: 'toto datapoint', delay: 30}};
-			var segmentModel = {type: 'segment', data: {name: 'segment de la muerte'}};
-			var groupModel = {conditions: [], groups: []};
-			
-			$scope.addCritere = function() {
-				var data = angular.copy(critereModel);
-				data.id = 'c' + Math.floor((Math.random()*100000)+1);
-				$scope.data.conditions.push(data);
-			}
-			$scope.addSegment = function() {
-				var data = angular.copy(segmentModel);
-				data.id = 'c' + Math.floor((Math.random()*100000)+1);
-				$scope.data.conditions.push(data);
-			}
-			
-			$scope.addGroup = function() {
-				var data = angular.copy(groupModel);
-				data.id = 'g' + Math.floor((Math.random()*100000)+1);
-				data.level = $scope.data.level+1;
-				$scope.data.groups.push(data);
-			}
-			
-			$scope.deleteCondition = function(id) {
-				var start = $scope.data.conditions.length - 1;
-				for(var i = start; i >= 0; i--) {
-					if($scope.data.conditions[i].id === id) {
-						$scope.data.conditions.splice(i, 1);
-					}
-				}
-			}
-			
-			$scope.deleteGroup = function(id) {
-				var start = $scope.data.groups.length - 1;
-				for(var i = start; i >= 0; i--) {
-					if($scope.data.groups[i].id === id) {
-						$scope.data.groups.splice(i, 1);
-					}
-				}
-			}
         }
     };
 });
 
 
-appTest.directive('condition', function() {
+appTest.directive('segmentBuilderDatapoint', function() {
 	return {
-	    restrict: 'E',
-	    replace: true,
-	    transclude: false,
-	    scope: {
-			id: '=',
-			position: '=',
-			type: '=',
+		restrict: 'E',
+		replace: true,
+		transclude: false,
+		scope: {
 			data: '=',
 			deletePlease: '&'
-	    },
-	    template: '<div class="condition form-inline">\
-  		  			  <span class="glyphicon glyphicon-hand-right"></span>\
-	                  <span>{{ position + " > " + type + " - " + id }}</span>\
-	                  <input type="text" class="form-control input-sm" name="name" ng-model="data.name"/>\
-	                  <input type="text" class="form-control input-sm" name="condition"/>\
-	                  <button ng-click="deletePlease({id: id})" class="btn btn-sm btn-danger">DELETE</button>\
-	              </div>',
-	    controller: function($scope, $rootScope) {
-	    },
-	    link: function(scope, element, attrs) {
-	    }
-  };
+		},
+	    template:  '<li class="condition form-inline">\
+			            <span>DATAPOINT: {{ data.id }}</span>\
+			            <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger">DELETE</button>\
+			        </li>',
+		controller: function($scope, $rootScope) {
+		},
+		link: function(scope, element, attrs) {
+		}
+	};
 });
 
-
-appTest.directive("drag", ["$rootScope", function($rootScope) {
+appTest.directive('segmentBuilderSegment', function() {
 	return {
-		restrict: 'A',
-		scope: false,
-		link: function(scope, element, attrs)  {
-			attrs.$set('draggable', 'true');
-			scope.dragData = scope[attrs["drag"]];
-			
-			element.bind('dragstart', function(evt) {
-				scope.$apply(function() {
-		    		$rootScope.drag.operationInProgress = true;
-		    		$rootScope.drag.draggedElement = scope.dragData;
-		    		element.addClass('drag-in-progress');
-		    	});
-				
-				var dragIcon = document.createElement('img');
-				dragIcon.src = 'https://lh3.googleusercontent.com/-4QogQ4rqOWU/AAAAAAAAAAI/AAAAAAAAK4o/bD6zRy2VgJU/photo.jpg';
-				evt.originalEvent.dataTransfer.setDragImage(dragIcon, 128, 128);
-				
-				evt.originalEvent.dataTransfer.setData("id", evt.target.id);
-				evt.originalEvent.dataTransfer.dropEffect = 'move';
-				//evt.originalEvent.dataTransfer.effectAllowed = 'none';
-			});
-			
-			element.bind('dragend', function(evt) {
-				scope.$apply(function() {
-					$rootScope.drag.operationInProgress = false;
-					element.removeClass('drag-in-progress');
-				});
-			});
+		restrict: 'E',
+		replace: true,
+		transclude: false,
+		scope: {
+			data: '=',
+			deletePlease: '&'
+		},
+		template:  '<li class="condition form-inline">\
+						<span>SEGMENT: {{ data.id }}</span>\
+						<button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger">DELETE</button>\
+					</li>',
+		controller: function($scope, $rootScope) {
+		},
+		link: function(scope, element, attrs) {
 		}
-	}
-}]);
-
-appTest.directive("drop", ['$rootScope', function($rootScope) {
-	return {
-		restrict: 'A',
-		scope: false,
-		link: function(scope, element, attrs)  {
-			scope.dropData = scope[attrs['drop']];
-			
-			element.bind('dragenter', function(evt) {			console.log('dragenter');
-				scope.$apply(function() {
-					element.addClass('drop-in-progress');
-				});
-				evt.preventDefault();
-				return false;
-			});
-			
-			element.bind('dragleave', function(evt) {			console.log('dragleave');
-				scope.$apply(function() {
-					element.removeClass('drop-in-progress');
-				});
-			});
-			
-			element.bind('dragover', function(evt) {			console.log('dragover');
-				evt.preventDefault();
-				return false;
-			});
-			
-			element.bind('drop', function(evt) {			console.log('drop');
-				scope.$apply(function() {
-					element.removeClass('drop-in-progress');
-					$rootScope.$broadcast('dropEvent', $rootScope.drag.draggedElement, scope.dropData);
-				});
-				evt.preventDefault();
-				return false;
-			});
-		}
-	}
-}]);
+	};
+});
