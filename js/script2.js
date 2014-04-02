@@ -5,13 +5,13 @@ var appTest = angular.module('appTest', ['ngAnimate']);
 
 appTest.controller('MainController', function($scope, $rootScope) {
   
-	$scope.titi = 'whisky a gogo';
+	$scope.titi = 'Test 2';
 	
 	$rootScope.drag = {
 		draggedElement: null,
 		operationInProgress: false
 	};
-  
+	
 	$scope.dataMainGroup = {
 		id: 'g3254',
 		level: 0,

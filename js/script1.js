@@ -3,7 +3,7 @@ var appTest = angular.module('appTest', ['ngAnimate']);
 
 appTest.controller('MainController', function($scope, $rootScope) {
   
-	$scope.titi = 'whisly a gogo';
+	$scope.titi = 'Test 1';
 	
 	$rootScope.drag = {
 		draggedElement: null,
