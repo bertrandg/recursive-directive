@@ -26,45 +26,45 @@
                          <li class="active"><a href="index2.html">Test 2</a></li>
                          <li><a href="index3.html">Test 3</a></li>
                      </ul>
-	            </div>
+                </div>
             </div>
         </div>
         
         <br><br><br><br>
-        
+            
         <div class="container">
             
-			<div ng-app="appTest">
-            	<div ng-controller="MainController" class="main-container">
+            <div ng-app="appTest">
+                <div ng-controller="MainController" class="main-container">
                 
-	                <h1>Segment builder > {{ titi }}</h1>
-	                
-					<group-conditions data="dataMainGroup" b-dragging="drag.operationInProgress" drop="data.id">
-					
-						<div class="options" ng-class="{'drag-in-progress': bDragging}">
-							<span class="glyphicon glyphicon-hand-right"></span>
-							<p>GROUPE LEVEL {{ data.level + ' - ' + data.id }}</p>
-							<button ng-click="addCritere()" class="btn btn-xs btn-primary">+CRITERE</button>
-							<button ng-click="addSegment()" class="btn btn-xs btn-primary">+SEGMENT</button>
-							<button ng-click="addGroup()" class="btn btn-xs btn-primary">+GROUP</button>
-							<button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger" ng-if="data.level > 0">DELETE</button>
-			            </div>
-						
-						<ul>
-							<li ng-repeat="condition in data.conditions" 
-								class="li-condition" 
-								ng-class="{'drag-in-progress': bDragging}">
-								
-		                		<condition  position="$index" 
-					                		id="condition.id" 
-					                		type="condition.type" 
-					                		data="condition.data" 
-					                		delete-please="deleteCondition(id)"
-					                		drag="condition"></condition>
-							</li>
-						</ul>
-		                
-					</group-conditions>
+                    <h1>Segment builder > {{ titi }}</h1>
+                    
+                    <group-conditions data="dataMainGroup" b-dragging="drag.operationInProgress" drop="data.id">
+                    
+                        <div class="options" ng-class="{'drag-in-progress': bDragging}">
+                            <span class="glyphicon glyphicon-hand-right"></span>
+                            <p>GROUPE LEVEL {{ data.level + ' - ' + data.id }}</p>
+                            <button ng-click="addCritere()" class="btn btn-xs btn-primary">+CRITERE</button>
+                            <button ng-click="addSegment()" class="btn btn-xs btn-primary">+SEGMENT</button>
+                            <button ng-click="addGroup()" class="btn btn-xs btn-primary">+GROUP</button>
+                            <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger" ng-if="data.level > 0">DELETE</button>
+                        </div>
+                        
+                        <ul>
+                            <li ng-repeat="condition in data.conditions" 
+                                class="li-condition" 
+                                ng-class="{'drag-in-progress': bDragging}">
+                                
+                                <condition  position="$index" 
+                                            id="condition.id" 
+                                            type="condition.type" 
+                                            data="condition.data" 
+                                            delete-please="deleteCondition(id)"
+                                            drag="condition"></condition>
+                            </li>
+                        </ul>
+                        
+                    </group-conditions>
                   
                 </div>
               </div>

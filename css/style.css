@@ -8,6 +8,7 @@
     padding: 0;
     margin: 0 0 0 20px; }
   .main-container .group-conditions {
+    position: relative;
     display: block;
     min-height: 60px;
     border-radius: 4px;
@@ -185,6 +186,8 @@
       width: 50px;
       height: 50px;
       background: blue; }
+  .main-container .li-group {
+    position: relative; }
   .main-container .li-condition.ng-enter,
   .main-container .li-group.ng-enter {
     -webkit-animation: fadeInRight 0.4s;
@@ -202,4 +205,5 @@
 
 span.special-info {
   position: absolute;
-  left: -300px; }
+  left: -260px;
+  background: yellow; }
