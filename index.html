@@ -14,43 +14,88 @@
         <link href="css/style.css" rel="stylesheet">
     </head>
 
-    <body>
+    <body ng-app="app">
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="#">Recursive directive and drag&drop</a>
+                    <a class="navbar-brand" href="">Recursive directive and drag&drop</a>
                 </div>
-                <div class="collapse navbar-collapse">
-                     <ul class="nav navbar-nav">
-                         <li class="active"><a href="index.html">Test 1</a></li>
-                         <li><a href="index2.html">Test 2</a></li>
-                         <li><a href="index3.html">Test 3</a></li>
-                     </ul>
-                </div>
+<!--                 <div class="collapse navbar-collapse"> -->
+<!--                      <ul class="nav navbar-nav"> -->
+<!--                          <li class="active"><a href="index.html">Test 1</a></li> -->
+<!--                          <li><a href="index2.html">Test 2</a></li> -->
+<!--                          <li><a href="index3.html">Test 3</a></li> -->
+<!--                      </ul> -->
+<!--                 </div> -->
             </div>
         </div>
         
         <br><br><br><br>
         
+        
         <div class="container">
             
-            <div ng-app="appTest">
-                <div ng-controller="MainController" class="main-container">
+            <div ng-controller="MainController" class="main-container">
                 
-                    <h1>Segment builder > {{ titi }}</h1>
-                    
-                    <group-conditions data="dataMainGroup" b-dragging="drag.operationInProgress" drop="data.id"></group-conditions>
-                  
-                </div>
-              </div>
+                <element-price data="segment.totalPrice"></element-price>
+                <h1>
+                    <span>Segment builder > {{ titi }}</span>
+                </h1>
+                
+                <ul>
+                    <segment-builder-group data="dataMainGroup" level="1" class="group-conditions level-0"></segment-builder-group>
+                </ul>
+              
+            </div>
 
         </div>
 
+        <script type="text/ng-template" id="segmentBuilderGroupTpl">
+            <li>
+                <div class="options">
+                    <p>{{ data.id }}<group-relation data="data.relation"></group-relation></p>
+                    <button ng-click="addElement('criterion')" class="btn btn-xs btn-primary">+CRITERE</button>
+                    <button ng-click="addElement('segment')" class="btn btn-xs btn-primary">+SEGMENT</button>
+                    <button ng-click="addElement('group')" class="btn btn-xs btn-primary">+GROUP</button>
+                    <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="level > 1">DELETE</button>
+                    <button ng-click="duplicatePlease({id: data.id})" class="btn btn-xs btn-primary align-right" ng-if="level > 1"><span class="glyphicon glyphicon-tags"></span></button>
+                </div>
+                <ul ng-show="data.elements.length > 0">
+                    <li ng-repeat="element in data.elements | orderBy:'position'"
+                        class="level-{{ level }}"
+                        ng-class="{true:'li-group group-conditions', false:'li-condition'}[element.type == 'group']">
+                        <div ng-switch="element.type">
+                            <div ng-switch-when="segment">
+<span class="special-info">POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
+                                <segment-builder-segment data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-segment>
+                            </div>
+                            <div ng-switch-when="criterion">
+<span class="special-info">POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
+                                <segment-builder-criterion data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-criterion>
+                            </div>
+                            <div ng-switch-when="group">
+<span class="special-info">LEVEL {{ level }} > POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
+                                <segment-builder-element data="element" 
+                                                         level="level+1"
+                                                         delete-please="deleteElement(id)" 
+                                                         duplicate-please="duplicateElement(id)"></segment-builder-element>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+                <div ng-if="data.elements.length == 0">
+                    <h4 class="empty-group">Please add a criterion, a segment, or an other group.</h4>
+                </div>
+            </li>
+        </script>
 
         <script src="libs/jquery/dist/jquery.min.js"></script>
         <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="libs/angular/angular.min.js"></script>
         <script src="libs/angular-animate/angular-animate.min.js"></script>
-        <script src="js/script1.js"></script>
+        <script src="js/app.js"></script>
+        <script src="js/controller.js"></script>
+        <script src="js/service.js"></script>
+        <script src="js/directive.js"></script>
     </body>
 </html>
