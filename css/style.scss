@@ -65,10 +65,6 @@ $border_radius_custom: 4px;
             }
         }
         
-        button.btn-danger {
-            float: right;
-        }
-        
         span.glyphicon-hand-right {
             cursor: move;
         }
@@ -81,6 +77,11 @@ $border_radius_custom: 4px;
     .options {
         p,
         button {
+            display: inline-block;
+        }
+        
+        select {
+            width: 100px;
             display: inline-block;
         }
     }
@@ -96,15 +97,18 @@ $border_radius_custom: 4px;
         
         input,
         select {
-	        width: 120px;
+	        width: 100px;
         }
         
         &.drag-in-progress {
             background: pink;
         }
-        
     }
     
+    button.align-right {
+        float: right;
+    }
+       
     .drag-in-progress {
         pointer-events: none;
         background: green;
@@ -134,6 +138,15 @@ $border_radius_custom: 4px;
         }
         &.ng-leave {
             @include animation(fadeOutLeft 0.2s);
+        }
+    }
+    
+    .threshold {
+        &.ng-hide-add {
+            @include animation(fadeOut 0.4s);
+        }
+        &.ng-hide-remove {
+            @include animation(fadeIn 0.4s);
         }
     }
 }

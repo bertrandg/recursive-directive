@@ -14,7 +14,7 @@
         <link href="css/style.css" rel="stylesheet">
     </head>
 
-    <body>
+    <body ng-app="app">
         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="container">
                 <div class="navbar-header">
@@ -34,20 +34,54 @@
         
         <div class="container">
             
-            <div ng-app="app">
-                <div ng-controller="MainController" class="main-container">
-                    
-                    <h1>Segment builder > {{ titi }}</h1>
-                    
-                    <ul>
-                        <segment-builder-group data="dataMainGroup" class="group-conditions level-0"></segment-builder-group>
-                    </ul>
-                  
-                </div>
-              </div>
+            <div ng-controller="MainController" class="main-container">
+                
+                <element-price data="segment.totalPrice"></element-price>
+                <h1>
+                    <span>Segment builder > {{ titi }}</span>
+                </h1>
+                
+                <ul>
+                    <segment-builder-group data="dataMainGroup" class="group-conditions level-0"></segment-builder-group>
+                </ul>
+              
+            </div>
 
         </div>
-
+        
+        <script type="text/ng-template" id="segmentBuilderGroupTpl">
+	        <li>
+	            <div class="options">
+	                <p>{{ data.id }}<group-relation data="data.relation"></group-relation></p>
+	                <button ng-click="addElement('criterion')" class="btn btn-xs btn-primary">+CRITERE</button>
+	                <button ng-click="addElement('segment')" class="btn btn-xs btn-primary">+SEGMENT</button>
+	                <button ng-click="addElement('group')" class="btn btn-xs btn-primary">+GROUP</button>
+	                <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="data.level > 0">DELETE</button>
+	                <button ng-click="duplicatePlease({id: data.id})" class="btn btn-xs btn-primary align-right" ng-if="data.level > 0"><span class="glyphicon glyphicon-tags"></span></button>
+	            </div>
+	            <ul ng-show="data.elements.length > 0">
+	                <li ng-repeat="element in data.elements | orderBy:'position'"
+	                    class="level-{{ data.level }}"
+	                    ng-class="{true:'li-group group-conditions', false:'li-condition'}[element.type == 'group']">
+	                    <span class="special-info">LEVEL {{ element.level }} > POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
+	                    <div ng-switch="element.type">
+	                        <div ng-switch-when="segment">
+	                            <segment-builder-segment data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-segment>
+	                        </div>
+	                        <div ng-switch-when="criterion">
+	                            <segment-builder-criterion data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-criterion>
+	                        </div>
+	                        <div ng-switch-when="group">
+	                            <segment-builder-element data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-element>
+	                        </div>
+	                    </div>
+	                </li>
+	            </ul>
+	            <div ng-if="data.elements.length == 0">
+	                <h4 class="empty-group">Please add a criterion, a segment, or an other group.</h4>
+	            </div>
+	        </li>
+        </script>
 
         <script src="libs/jquery/dist/jquery.min.js"></script>
         <script src="libs/bootstrap/dist/js/bootstrap.min.js"></script>

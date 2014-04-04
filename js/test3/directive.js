@@ -7,38 +7,10 @@ app.directive("segmentBuilderGroup", function() {
         replace: true,
         scope: {
             data: '=',
+            duplicatePlease: '&',
             deletePlease: '&'
         },
-        template:  '<li class="">\
-                        <div class="options">\
-                            <p>GROUP: {{ data.id }}</p>\
-                            <button ng-click="addDatapoint()" class="btn btn-xs btn-primary">+CRITERE</button>\
-                            <button ng-click="addSegment()" class="btn btn-xs btn-primary">+SEGMENT</button>\
-                            <button ng-click="addGroup()" class="btn btn-xs btn-primary">+GROUP</button>\
-                            <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger" ng-if="data.level > 0">DELETE</button>\
-                        </div>\
-                        <ul ng-show="data.elements.length > 0">\
-                            <li ng-repeat="element in data.elements | orderBy:\'position\'"\
-                                class="level-{{ data.level }}"\
-                                ng-class="{true:\'li-group group-conditions\', false:\'li-condition\'}[element.type == \'group\']">\
-                                <span class="special-info">LEVEL {{ element.level }} > POSITION: {{ element.position + \' (\' + element.id + \')\' }}</span>\
-                                <div ng-switch="element.type">\
-                                    <div ng-switch-when="segment">\
-                                        <segment-builder-segment data="element" delete-please="deleteElement(id)"></segment-builder-segment>\
-                                    </div>\
-                                    <div ng-switch-when="datapoint">\
-                                        <segment-builder-datapoint data="element" delete-please="deleteElement(id)"></segment-builder-datapoint>\
-                                    </div>\
-                                    <div ng-switch-when="group">\
-                                        <segment-builder-element data="element" delete-please="deleteElement(id)"></segment-builder-element>\
-                                    </div>\
-                                </div>\
-                            </li>\
-                        </ul>\
-                        <div ng-if="data.elements.length == 0">\
-                            <h4 class="empty-group">Please add a datapoint, a segment, or an other group.</h4>\
-                        </div>\
-                    </li>',
+        templateUrl:  'segmentBuilderGroupTpl',
         controller: function($scope, SegmentBuilder) {
             
             var getPositionNewElement = function() {
@@ -49,17 +21,43 @@ app.directive("segmentBuilderGroup", function() {
                 return maxPositionValue + 1;
             }
             
-            $scope.addDatapoint = function() {
-                $scope.data.elements.push( SegmentBuilder.getNewDatapoint($scope.data.level+1, getPositionNewElement()) );
-            }
-            $scope.addSegment = function() {
-                $scope.data.elements.push( SegmentBuilder.getNewSegment($scope.data.level+1, getPositionNewElement()) );
-            }
-            $scope.addGroup = function() {
-                $scope.data.elements.push( SegmentBuilder.getNewGroup($scope.data.level+1, getPositionNewElement()) );
+            var getElement = function(id) {
+                var elem = null;
+                angular.forEach($scope.data.elements, function(value, key){
+                    if(value.id == id) elem = value;
+                });
+                return elem;
             }
             
-            // id could be a datapoint, segment, or group
+            $scope.addElement = function(type) {
+                var newElem,
+                    newLevel = $scope.data.level + 1, 
+                    newPosition = getPositionNewElement();
+                
+                switch(type) {
+                    case 'criterion':
+                        newElem = SegmentBuilder.getNewCriterion(newLevel, newPosition);
+                        break;
+                    case 'segment':
+                        newElem = SegmentBuilder.getNewSegment(newLevel, newPosition);
+                        break;
+                    case 'group':
+                        newElem = SegmentBuilder.getNewGroup(newLevel, newPosition);
+                        break;
+                }
+                $scope.data.elements.push(newElem);
+            }
+            
+            // id could be a criterion, segment, or group
+            $scope.duplicateElement = function(id) {
+                var element = getElement(id);
+                
+                if(element) {
+                    $scope.data.elements.push( SegmentBuilder.duplicateElement(element, getPositionNewElement()) );
+                }
+            }
+            
+            // id could be a criterion, segment, or group
             $scope.deleteElement = function(id) {
                 var start = $scope.data.elements.length - 1;
                 for(var i = start; i >= 0; i--) {
@@ -78,11 +76,12 @@ app.directive("segmentBuilderElement", function($compile) {
         replace: true,
         scope: {
             data: '=',
+            duplicatePlease: '&',
             deletePlease: '&'
         },
         template: '',
         link: function (scope, element, attrs) {
-            var subElementsString = '<segment-builder-group data="data" delete-please="deletePlease({id: data.id})"></segment-builder-group>';
+            var subElementsString = '<segment-builder-group data="data" delete-please="deletePlease({id: data.id})" duplicate-please="duplicatePlease({id: data.id})"></segment-builder-group>';
             
             if (angular.isArray(scope.data.elements)) {       
                 $compile(subElementsString)(scope, function(cloned, scope)   {
@@ -94,24 +93,53 @@ app.directive("segmentBuilderElement", function($compile) {
     };
 });
 
+app.directive('groupRelation', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            data: '='
+        },
+        template:  '<span>\
+                        <select ng-model="data"\
+                                ng-options="item.value as item.name for item in listRelation"\
+                                class="form-control input-sm">\
+                        </select>\
+                    </span>',
+        controller: function($scope, SegmentBuilder) {
+            $scope.listRelation = SegmentBuilder.groupInfo.relation;
+        },
+        link: function(scope, element, attrs) {}
+    };
+});
 
-app.directive('segmentBuilderDatapoint', function() {
+
+app.directive('segmentBuilderCriterion', function() {
     return {
         restrict: 'E',
         replace: true,
         scope: {
             data: '=',
+            duplicatePlease: '&',
             deletePlease: '&'
         },
         template:  '<div class="condition form-inline">\
-                        <dp-selector data="data.datapoint"></dp-selector>\
+                        <dp-selector data="data.criterion"></dp-selector>\
                         <dp-operator data="data.operator"></dp-operator>\
                         <dp-value data="data.value"></dp-value>\
                         <dp-mode data="data.mode"></dp-mode>\
-                        <dp-threshold data1="data.thresholdValue" data2="data.thresholdUnit"></dp-threshold>\
-                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger">DELETE</button>\
+                        <dp-threshold data1="data.thresholdValue" data2="data.thresholdUnit" ng-show="showThreshold()"></dp-threshold>\
+                        <dp-recency data="data.recency"></dp-recency>\
+                        <element-price data="data.criterion.price"></element-price>\
+                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right">DELETE</button>\
+                        <button ng-click="duplicatePlease({id: data.id})" class="btn btn-sm btn-primary align-right"><span class="glyphicon glyphicon-tags"></span></button>\
                     </div>',
-        controller: function($scope) {},
+        controller: function($scope) {
+            
+            $scope.showThreshold = function() {
+                return ['at_least_one', 'none', 'all'].indexOf($scope.data.mode) < 0;
+            }
+        },
         link: function(scope, element, attrs) {}
     };
 });
@@ -140,12 +168,13 @@ app.directive('dpOperator', function() {
             data: '='
         },
         template:  '<span>\
-                        <select class="form-control input-sm">\
-                            <option ng-repeat="item in listOperator" ng-selected="item.value == data">{{ item.name }}</option>\
+                        <select ng-model="data"\
+                                ng-options="item.value as item.name for item in listOperator"\
+                                class="form-control input-sm">\
                         </select>\
                     </span>',
         controller: function($scope, SegmentBuilder) {
-            $scope.listOperator = SegmentBuilder.datapointInfo.operator;
+            $scope.listOperator = SegmentBuilder.criterionInfo.operator;
         },
         link: function(scope, element, attrs) {}
     };
@@ -174,12 +203,13 @@ app.directive('dpMode', function() {
             data: '='
         },
         template:  '<span>\
-                        <select class="form-control input-sm">\
-                            <option ng-repeat="item in listMode" ng-selected="item.value == data">{{ item.name }}</option>\
+                        <select ng-model="data"\
+                                ng-options="item.value as item.name for item in listMode"\
+                                class="form-control input-sm">\
                         </select>\
                     </span>',
         controller: function($scope, SegmentBuilder) {
-            $scope.listMode = SegmentBuilder.datapointInfo.mode;
+            $scope.listMode = SegmentBuilder.criterionInfo.mode;
         },
         link: function(scope, element, attrs) {}
     };
@@ -193,14 +223,15 @@ app.directive('dpThreshold', function() {
             data1: '=',
             data2: '='
         },
-        template:  '<span>\
+        template:  '<span class="threshold">\
                         <input type="text" class="form-control input-sm" name="name" ng-model="data1"/>\
-                        <select class="form-control input-sm">\
-                            <option ng-repeat="item in listThresholdUnit" ng-selected="item.value == data2">{{ item.name }}</option>\
+                        <select ng-model="data2"\
+                                ng-options="item.value as item.name for item in listThresholdUnit"\
+                                class="form-control input-sm">\
                         </select>\
                     </span>',
         controller: function($scope, SegmentBuilder) {
-            $scope.listThresholdUnit = SegmentBuilder.datapointInfo.thresholdUnit;
+            $scope.listThresholdUnit = SegmentBuilder.criterionInfo.thresholdUnit;
         },
         link: function(scope, element, attrs) {}
     };
@@ -221,6 +252,20 @@ app.directive('dpRecency', function() {
     };
 });
 
+app.directive('elementPrice', function() {
+    return {
+        restrict: 'E',
+        replace: true,
+        scope: {
+            data: '='
+        },
+        template:  '<span>\
+                        <span class="label label-info">{{ data | currency }}</span>\
+                    </span>',
+        controller: function($scope) {},
+        link: function(scope, element, attrs) {}
+    };
+});
 
 
 
@@ -233,12 +278,15 @@ app.directive('segmentBuilderSegment', function() {
         replace: true,
         scope: {
             data: '=',
+            duplicatePlease: '&',
             deletePlease: '&'
         },
         template:  '<div class="condition form-inline">\
                         <span>SEGMENT: {{ data.id }}</span>\
                         <input type="text" class="form-control input-sm" name="name" ng-model="data.segment.name"/>\
-                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger">DELETE</button>\
+                        <element-price data="data.segment.price"></element-price>\
+                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right">DELETE</button>\
+                        <button ng-click="duplicatePlease({id: data.id})" class="btn btn-sm btn-primary align-right"><span class="glyphicon glyphicon-tags"></span></button>\
                     </div>',
         controller: function($scope) {},
         link: function(scope, element, attrs) {}

@@ -1,7 +1,7 @@
 
 app.factory('SegmentBuilder', function() {
     
-    var datapointInfo = {
+    var criterionInfo = {
         operator: [
             {value:'contains',      name:'contains'},
             {value:'equals',        name:'equals (case insensitive)'},
@@ -25,15 +25,23 @@ app.factory('SegmentBuilder', function() {
            {value:'percent',    name:'%'},
            {value:'unit',       name:'times'}
         ]
-    }
+    };
+    
+    var groupInfo = {
+      relation: [
+          {value:'and',    name:'And'},
+          {value:'or',     name:'Or'},
+          {value:'none',   name:'None'}
+      ]
+    };
 
     var new_element = {
-        datapoint: {
+        criterion: {
             level: -1,
             position: -1,
-            type: 'datapoint',
+            type: 'criterion',
             id: '-1',
-            datapoint: {id: '987864', name: 'Resolution', code: 'a.g.r', price: 650000},
+            criterion: {id: '987864', name: 'Resolution', code: 'a.g.r', price: 650000},
             operator: 'ends_with',
             value: '',
             mode: 'at_least_one',
@@ -68,9 +76,9 @@ app.factory('SegmentBuilder', function() {
             {
                 level: 1,
                 position: 1,
-                type: 'datapoint',
-                id: 'datapoint65848',
-                datapoint: {id: '754564', name: 'Gender', code: 'v.f.g', price: 60000},
+                type: 'criterion',
+                id: 'criterion65848',
+                criterion: {id: '754564', name: 'Gender', code: 'v.f.g', price: 60000},
                 operator: 'contains',
                 value: 'homme',
                 mode: 'equals',
@@ -117,9 +125,9 @@ app.factory('SegmentBuilder', function() {
                             {
                                 level: 3,
                                 position: 3,
-                                type: 'datapoint',
-                                id: 'datapoint87195',
-                                datapoint: {id: '54159', name: 'Keyword', code: 's.w.w', price: 156000},
+                                type: 'criterion',
+                                id: 'criterion87195',
+                                criterion: {id: '54159', name: 'Keyword', code: 's.w.w', price: 156000},
                                 operator: 'equals',
                                 value: 'toto',
                                 mode: 'upper_than_n_percent_or_equal',
@@ -149,9 +157,9 @@ app.factory('SegmentBuilder', function() {
             {
                 level: 1,
                 position: 12,
-                type: 'datapoint',
-                id: 'datapoint68789',
-                datapoint: {id: '7413235', name: 'Browser', code: 's.w.b', price: 10000},
+                type: 'criterion',
+                id: 'criterion68789',
+                criterion: {id: '7413235', name: 'Browser', code: 's.w.b', price: 10000},
                 operator: 'ends_with',
                 value: 'opera',
                 mode: 'atLeastOnce',
@@ -164,17 +172,15 @@ app.factory('SegmentBuilder', function() {
     
     
     
-    
-    
-    var getNewDatapoint = function(level, position) {
-        var datapoint = angular.copy(new_element.datapoint);
-        datapoint.id = 'datapoint' + Math.floor((Math.random()*100000)+1);
-        datapoint.level = level;
-        datapoint.position = position;
-        return datapoint;
+    var getNewCriterion = function(level, position) {
+        var criterion = angular.copy(new_element.criterion);
+        criterion.id = 'criterion' + Math.floor((Math.random()*100000)+1);
+        criterion.level = level;
+        criterion.position = position;
+        return criterion;
     };
     
-    var getNewSegment = function (level, position) {
+    var getNewSegment = function(level, position) {
         var segment = angular.copy(new_element.segment);
         segment.id = 'segment' + Math.floor((Math.random()*100000)+1);
         segment.level = level;
@@ -182,19 +188,52 @@ app.factory('SegmentBuilder', function() {
         return segment;
     };
     
-    var getNewGroup = function (level, position) {
+    var getNewGroup = function(level, position) {
         var group = angular.copy(new_element.group);
         group.id = 'group' + Math.floor((Math.random()*100000)+1);
         group.level = level;
         group.position = position;
         return group;
     };
+    
+    
+    
+    var resetAllIdInThisGroup = function(elements) {
+        console.log('resetAllIdInThisGroup()');
+        angular.forEach(elements, function(element, key){
+            element.id = element.type + Math.floor((Math.random()*100000)+1);
+            console.log('element.id = ', element.id);
+            
+            if(element.type == 'group') {
+                resetAllIdInThisGroup(element.elements);
+            }
+        });
+    };
+    
+    
+    
+    var duplicateElement = function(element, position) {
+        var duplicate_element = angular.copy(element);
+        duplicate_element.id = duplicate_element.type + Math.floor((Math.random()*100000)+1);
+        duplicate_element.position = position;
+        
+        if(duplicate_element.type == 'group') {
+            resetAllIdInThisGroup(duplicate_element.elements);
+            console.log('element = ', element.relation);
+            console.log('duplicate_element = ', duplicate_element.relation);
+        }
+        
+        
+        return duplicate_element;
+    };
 
     return {
-        getNewDatapoint: getNewDatapoint,
+        getNewCriterion: getNewCriterion,
         getNewSegment: getNewSegment,
         getNewGroup: getNewGroup,
-        datapointInfo: datapointInfo,
+        duplicateElement: duplicateElement,
+        criterionInfo: criterionInfo,
+        groupInfo: groupInfo,
         currentSegment: currentSegmentDetail
     };
 });
