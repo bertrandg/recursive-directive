@@ -7,15 +7,16 @@ app.directive("segmentBuilderGroup", function() {
         replace: true,
         scope: {
             data: '=',
+            level: '=',
             duplicatePlease: '&',
             deletePlease: '&'
         },
         templateUrl:  'segmentBuilderGroupTpl',
-        controller: function($scope, SegmentBuilder) {
+        controller: function($scope, $rootScope, SegmentBuilder) {
             
             var getPositionNewElement = function() {
                 var maxPositionValue = 0;
-                angular.forEach($scope.data.elements, function(value, key){
+                angular.forEach($scope.data.elements, function(value, key) {
                     if(value.position > maxPositionValue) maxPositionValue = value.position;
                 });
                 return maxPositionValue + 1;
@@ -23,7 +24,7 @@ app.directive("segmentBuilderGroup", function() {
             
             var getElement = function(id) {
                 var elem = null;
-                angular.forEach($scope.data.elements, function(value, key){
+                angular.forEach($scope.data.elements, function(value, key) {
                     if(value.id == id) elem = value;
                 });
                 return elem;
@@ -31,21 +32,22 @@ app.directive("segmentBuilderGroup", function() {
             
             $scope.addElement = function(type) {
                 var newElem,
-                    newLevel = $scope.data.level + 1, 
                     newPosition = getPositionNewElement();
                 
                 switch(type) {
                     case 'criterion':
-                        newElem = SegmentBuilder.getNewCriterion(newLevel, newPosition);
+                        newElem = SegmentBuilder.getNewCriterion(newPosition);
                         break;
                     case 'segment':
-                        newElem = SegmentBuilder.getNewSegment(newLevel, newPosition);
+                        newElem = SegmentBuilder.getNewSegment(newPosition);
                         break;
                     case 'group':
-                        newElem = SegmentBuilder.getNewGroup(newLevel, newPosition);
+                        newElem = SegmentBuilder.getNewGroup(newPosition);
                         break;
                 }
                 $scope.data.elements.push(newElem);
+                
+                $rootScope.$broadcast(SegmentBuilder.events.name, SegmentBuilder.events.type.UPDATE_PRICE);
             }
             
             // id could be a criterion, segment, or group
@@ -53,8 +55,11 @@ app.directive("segmentBuilderGroup", function() {
                 var element = getElement(id);
                 
                 if(element) {
-                    $scope.data.elements.push( SegmentBuilder.duplicateElement(element, getPositionNewElement()) );
+                    var duplicate_element = SegmentBuilder.duplicateElement(element, getPositionNewElement());
+                    $scope.data.elements.push(duplicate_element);
                 }
+                
+                $rootScope.$broadcast(SegmentBuilder.events.name, SegmentBuilder.events.type.UPDATE_PRICE);
             }
             
             // id could be a criterion, segment, or group
@@ -65,6 +70,8 @@ app.directive("segmentBuilderGroup", function() {
                         $scope.data.elements.splice(i, 1);
                     }
                 }
+                
+                $rootScope.$broadcast(SegmentBuilder.events.name, SegmentBuilder.events.type.UPDATE_PRICE);
             }
         },
     };
@@ -76,15 +83,19 @@ app.directive("segmentBuilderElement", function($compile) {
         replace: true,
         scope: {
             data: '=',
+            level: '=',
             duplicatePlease: '&',
             deletePlease: '&'
         },
         template: '',
         link: function (scope, element, attrs) {
-            var subElementsString = '<segment-builder-group data="data" delete-please="deletePlease({id: data.id})" duplicate-please="duplicatePlease({id: data.id})"></segment-builder-group>';
+            var subElementsString = '<segment-builder-group data="data"\
+                                                            level="level"\
+                                                            delete-please="deletePlease({id: data.id})"\
+                                                            duplicate-please="duplicatePlease({id: data.id})"></segment-builder-group>';
             
             if (angular.isArray(scope.data.elements)) {       
-                $compile(subElementsString)(scope, function(cloned, scope)   {
+                $compile(subElementsString)(scope, function(cloned, scope) {
                     element.append(cloned); 
                 });
             }

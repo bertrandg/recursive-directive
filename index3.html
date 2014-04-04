@@ -42,7 +42,7 @@
                 </h1>
                 
                 <ul>
-                    <segment-builder-group data="dataMainGroup" class="group-conditions level-0"></segment-builder-group>
+                    <segment-builder-group data="dataMainGroup" level="1" class="group-conditions level-0"></segment-builder-group>
                 </ul>
               
             </div>
@@ -56,23 +56,28 @@
 	                <button ng-click="addElement('criterion')" class="btn btn-xs btn-primary">+CRITERE</button>
 	                <button ng-click="addElement('segment')" class="btn btn-xs btn-primary">+SEGMENT</button>
 	                <button ng-click="addElement('group')" class="btn btn-xs btn-primary">+GROUP</button>
-	                <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="data.level > 0">DELETE</button>
-	                <button ng-click="duplicatePlease({id: data.id})" class="btn btn-xs btn-primary align-right" ng-if="data.level > 0"><span class="glyphicon glyphicon-tags"></span></button>
+	                <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="level > 1">DELETE</button>
+	                <button ng-click="duplicatePlease({id: data.id})" class="btn btn-xs btn-primary align-right" ng-if="level > 1"><span class="glyphicon glyphicon-tags"></span></button>
 	            </div>
 	            <ul ng-show="data.elements.length > 0">
 	                <li ng-repeat="element in data.elements | orderBy:'position'"
-	                    class="level-{{ data.level }}"
+	                    class="level-{{ level }}"
 	                    ng-class="{true:'li-group group-conditions', false:'li-condition'}[element.type == 'group']">
-	                    <span class="special-info">LEVEL {{ element.level }} > POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
 	                    <div ng-switch="element.type">
 	                        <div ng-switch-when="segment">
+<span class="special-info">POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
 	                            <segment-builder-segment data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-segment>
 	                        </div>
 	                        <div ng-switch-when="criterion">
+<span class="special-info">POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
 	                            <segment-builder-criterion data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-criterion>
 	                        </div>
 	                        <div ng-switch-when="group">
-	                            <segment-builder-element data="element" delete-please="deleteElement(id)" duplicate-please="duplicateElement(id)"></segment-builder-element>
+<span class="special-info">LEVEL {{ level }} > POSITION: {{ element.position + ' (' + element.id + ')' }}</span>
+	                            <segment-builder-element data="element" 
+                                                         level="level+1"
+                                                         delete-please="deleteElement(id)" 
+                                                         duplicate-please="duplicateElement(id)"></segment-builder-element>
 	                        </div>
 	                    </div>
 	                </li>

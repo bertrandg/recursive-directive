@@ -34,10 +34,18 @@ app.factory('SegmentBuilder', function() {
           {value:'none',   name:'None'}
       ]
     };
+    
+    var events = {
+        name: 'segmentBuilderEvent',
+        type: {
+            UPDATE_PRICE: 'UPDATE_PRICE',
+            OPEN_SEGMENT_SELECTOR: 'OPEN_SEGMENT_SELECTOR',
+            OPEN_DATAPOINT_SELECTOR: 'OPEN_DATAPOINT_SELECTOR'
+        }
+    };
 
     var new_element = {
         criterion: {
-            level: -1,
             position: -1,
             type: 'criterion',
             id: '-1',
@@ -50,14 +58,12 @@ app.factory('SegmentBuilder', function() {
             recency: 0
         },
         segment: {
-            level: -1,
             position: -1,
             type: 'segment',
             id: '-1',
             segment: {id: '648648', name: 'segment bien bien bien', price: 544000}
         },
         group: {
-            level: -1,
             position: -1,
             type: 'group',
             id: '-1',
@@ -67,14 +73,12 @@ app.factory('SegmentBuilder', function() {
     };
     
     var currentSegmentDetail = {
-        level: 0,
         position: 1,
         type: 'group',
         id: 'group35848',
         relation: 'and',
         elements: [
             {
-                level: 1,
                 position: 1,
                 type: 'criterion',
                 id: 'criterion65848',
@@ -87,14 +91,12 @@ app.factory('SegmentBuilder', function() {
                 recency: 12
             },
             {
-                level: 1,
                 position: 4,
                 type: 'group',
                 id: 'group8979',
                 relation: 'or',
                 elements: [
                     {
-                        level: 2,
                         position: 6,
                         type: 'group',
                         id: 'group2316',
@@ -102,28 +104,24 @@ app.factory('SegmentBuilder', function() {
                         elements: []
                     },
                     {
-                        level: 2,
                         position: 4,
                         type: 'segment',
                         id: 'segment871528',
                         segment: {id: '847616', name: 'segment de la muerte', price: 84000}
                     },
                     {
-                        level: 2,
                         position: 1,
                         type: 'group',
                         id: 'group21384',
                         relation: 'or',
                         elements: [
                             {
-                                level: 3,
                                 position: 1,
                                 type: 'segment',
                                 id: 'segment819954',
                                 segment: {id: '51655', name: 'the segment xyz', price: 9100}
                             },
                             {
-                                level: 3,
                                 position: 3,
                                 type: 'criterion',
                                 id: 'criterion87195',
@@ -140,14 +138,12 @@ app.factory('SegmentBuilder', function() {
                 ]
             },
             {
-                level: 1,
                 position: 2,
                 type: 'segment',
                 id: 'segment8944',
                 segment: {id: '7568468', name: 'mon segment toto', price: 42000}
             },
             {
-                level: 1,
                 position: 3,
                 type: 'group',
                 id: 'group54614',
@@ -155,7 +151,6 @@ app.factory('SegmentBuilder', function() {
                 elements: []
             },
             {
-                level: 1,
                 position: 12,
                 type: 'criterion',
                 id: 'criterion68789',
@@ -172,26 +167,23 @@ app.factory('SegmentBuilder', function() {
     
     
     
-    var getNewCriterion = function(level, position) {
+    var getNewCriterion = function(position) {
         var criterion = angular.copy(new_element.criterion);
         criterion.id = 'criterion' + Math.floor((Math.random()*100000)+1);
-        criterion.level = level;
         criterion.position = position;
         return criterion;
     };
     
-    var getNewSegment = function(level, position) {
+    var getNewSegment = function(position) {
         var segment = angular.copy(new_element.segment);
         segment.id = 'segment' + Math.floor((Math.random()*100000)+1);
-        segment.level = level;
         segment.position = position;
         return segment;
     };
     
-    var getNewGroup = function(level, position) {
+    var getNewGroup = function(position) {
         var group = angular.copy(new_element.group);
         group.id = 'group' + Math.floor((Math.random()*100000)+1);
-        group.level = level;
         group.position = position;
         return group;
     };
@@ -199,10 +191,8 @@ app.factory('SegmentBuilder', function() {
     
     
     var resetAllIdInThisGroup = function(elements) {
-        console.log('resetAllIdInThisGroup()');
         angular.forEach(elements, function(element, key){
             element.id = element.type + Math.floor((Math.random()*100000)+1);
-            console.log('element.id = ', element.id);
             
             if(element.type == 'group') {
                 resetAllIdInThisGroup(element.elements);
@@ -219,12 +209,34 @@ app.factory('SegmentBuilder', function() {
         
         if(duplicate_element.type == 'group') {
             resetAllIdInThisGroup(duplicate_element.elements);
-            console.log('element = ', element.relation);
-            console.log('duplicate_element = ', duplicate_element.relation);
         }
         
-        
         return duplicate_element;
+    };
+    
+    
+    
+    var getGroupPrice = function(group) {
+        var price = 0;
+        
+        angular.forEach(group.elements, function(element, key) {
+            switch(element.type) {
+                case 'criterion':
+                    price += element.criterion.price;
+                    break;
+                case 'segment':
+                    price += element.segment.price;
+                    break;
+                case 'group':
+                    price += getGroupPrice(element);
+                    break;
+            }
+        });
+        return price;
+    };
+    
+    var getCurrentSegmentPrice = function() {
+        return getGroupPrice(currentSegmentDetail);
     };
 
     return {
@@ -234,6 +246,8 @@ app.factory('SegmentBuilder', function() {
         duplicateElement: duplicateElement,
         criterionInfo: criterionInfo,
         groupInfo: groupInfo,
-        currentSegment: currentSegmentDetail
+        currentSegment: currentSegmentDetail,
+        getCurrentSegmentPrice: getCurrentSegmentPrice,
+        events: events
     };
 });
