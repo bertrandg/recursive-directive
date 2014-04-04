@@ -142,7 +142,7 @@ app.directive('segmentBuilderCriterion', function() {
                         <dp-threshold data1="data.thresholdValue" data2="data.thresholdUnit" ng-show="showThreshold()"></dp-threshold>\
                         <dp-recency data="data.recency"></dp-recency>\
                         <element-price data="data.criterion.price"></element-price>\
-                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right">DELETE</button>\
+                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right"><span class="glyphicon glyphicon-trash"></span></button>\
                         <button ng-click="duplicatePlease({id: data.id})" class="btn btn-sm btn-primary align-right"><span class="glyphicon glyphicon-tags"></span></button>\
                     </div>',
         controller: function($scope) {
@@ -296,7 +296,7 @@ app.directive('segmentBuilderSegment', function() {
                         <span>SEGMENT: {{ data.id }}</span>\
                         <input type="text" class="form-control input-sm" name="name" ng-model="data.segment.name"/>\
                         <element-price data="data.segment.price"></element-price>\
-                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right">DELETE</button>\
+                        <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right"><span class="glyphicon glyphicon-trash"></span></button>\
                         <button ng-click="duplicatePlease({id: data.id})" class="btn btn-sm btn-primary align-right"><span class="glyphicon glyphicon-tags"></span></button>\
                     </div>',
         controller: function($scope) {},

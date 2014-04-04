@@ -49,6 +49,7 @@ $border_radius_custom: 4px;
         padding: 5px;
         
         $color_start: #f5f3f4;
+        $color_hover_start: #F4F4F4;
         @for $i from 0 through 15 {
             $darken_value: min(($i + 1) * 6, 100);
             $darken_value_more: min($darken_value + 8, 100);
@@ -58,6 +59,10 @@ $border_radius_custom: 4px;
                 background: darken($color_start, $darken_value);
                 border: 1px solid darken($color_start, $darken_value_more);
                 @include box-shadow(inset 0px 0px 10px 0px darken($color_start, $darken_value_more_more));
+		        
+		        &:hover {
+	                background: darken($color_hover_start, $darken_value);
+		        }
                 
                 .options {
                     border-bottom: 1px solid darken($color_start, $darken_value_more);

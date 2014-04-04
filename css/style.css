@@ -21,6 +21,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #b9abb2;
       -o-box-shadow: inset 0px 0px 10px 0px #b9abb2;
       box-shadow: inset 0px 0px 10px 0px #b9abb2; }
+      .main-container .group-conditions.level-0:hover {
+        background: #e5e5e5; }
       .main-container .group-conditions.level-0 .options {
         border-bottom: 1px solid #d5ccd0; }
     .main-container .group-conditions.level-1 {
@@ -30,6 +32,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #ab9aa2;
       -o-box-shadow: inset 0px 0px 10px 0px #ab9aa2;
       box-shadow: inset 0px 0px 10px 0px #ab9aa2; }
+      .main-container .group-conditions.level-1:hover {
+        background: #d5d5d5; }
       .main-container .group-conditions.level-1 .options {
         border-bottom: 1px solid #c7bbc1; }
     .main-container .group-conditions.level-2 {
@@ -39,6 +43,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #9d8993;
       -o-box-shadow: inset 0px 0px 10px 0px #9d8993;
       box-shadow: inset 0px 0px 10px 0px #9d8993; }
+      .main-container .group-conditions.level-2:hover {
+        background: #c6c6c6; }
       .main-container .group-conditions.level-2 .options {
         border-bottom: 1px solid #b9abb2; }
     .main-container .group-conditions.level-3 {
@@ -48,6 +54,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #8f7984;
       -o-box-shadow: inset 0px 0px 10px 0px #8f7984;
       box-shadow: inset 0px 0px 10px 0px #8f7984; }
+      .main-container .group-conditions.level-3:hover {
+        background: #b7b7b7; }
       .main-container .group-conditions.level-3 .options {
         border-bottom: 1px solid #ab9aa2; }
     .main-container .group-conditions.level-4 {
@@ -57,6 +65,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #7f6a75;
       -o-box-shadow: inset 0px 0px 10px 0px #7f6a75;
       box-shadow: inset 0px 0px 10px 0px #7f6a75; }
+      .main-container .group-conditions.level-4:hover {
+        background: #a8a8a8; }
       .main-container .group-conditions.level-4 .options {
         border-bottom: 1px solid #9d8993; }
     .main-container .group-conditions.level-5 {
@@ -66,6 +76,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #6e5c65;
       -o-box-shadow: inset 0px 0px 10px 0px #6e5c65;
       box-shadow: inset 0px 0px 10px 0px #6e5c65; }
+      .main-container .group-conditions.level-5:hover {
+        background: #989898; }
       .main-container .group-conditions.level-5 .options {
         border-bottom: 1px solid #8f7984; }
     .main-container .group-conditions.level-6 {
@@ -75,6 +87,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #5e4e56;
       -o-box-shadow: inset 0px 0px 10px 0px #5e4e56;
       box-shadow: inset 0px 0px 10px 0px #5e4e56; }
+      .main-container .group-conditions.level-6:hover {
+        background: #898989; }
       .main-container .group-conditions.level-6 .options {
         border-bottom: 1px solid #7f6a75; }
     .main-container .group-conditions.level-7 {
@@ -84,6 +98,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #4d4047;
       -o-box-shadow: inset 0px 0px 10px 0px #4d4047;
       box-shadow: inset 0px 0px 10px 0px #4d4047; }
+      .main-container .group-conditions.level-7:hover {
+        background: #7a7a7a; }
       .main-container .group-conditions.level-7 .options {
         border-bottom: 1px solid #6e5c65; }
     .main-container .group-conditions.level-8 {
@@ -93,6 +109,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #3c3237;
       -o-box-shadow: inset 0px 0px 10px 0px #3c3237;
       box-shadow: inset 0px 0px 10px 0px #3c3237; }
+      .main-container .group-conditions.level-8:hover {
+        background: #6a6a6a; }
       .main-container .group-conditions.level-8 .options {
         border-bottom: 1px solid #5e4e56; }
     .main-container .group-conditions.level-9 {
@@ -102,6 +120,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #2c2428;
       -o-box-shadow: inset 0px 0px 10px 0px #2c2428;
       box-shadow: inset 0px 0px 10px 0px #2c2428; }
+      .main-container .group-conditions.level-9:hover {
+        background: #5b5b5b; }
       .main-container .group-conditions.level-9 .options {
         border-bottom: 1px solid #4d4047; }
     .main-container .group-conditions.level-10 {
@@ -111,6 +131,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #1b1619;
       -o-box-shadow: inset 0px 0px 10px 0px #1b1619;
       box-shadow: inset 0px 0px 10px 0px #1b1619; }
+      .main-container .group-conditions.level-10:hover {
+        background: #4c4c4c; }
       .main-container .group-conditions.level-10 .options {
         border-bottom: 1px solid #3c3237; }
     .main-container .group-conditions.level-11 {
@@ -120,6 +142,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px #0a0909;
       -o-box-shadow: inset 0px 0px 10px 0px #0a0909;
       box-shadow: inset 0px 0px 10px 0px #0a0909; }
+      .main-container .group-conditions.level-11:hover {
+        background: #3c3c3c; }
       .main-container .group-conditions.level-11 .options {
         border-bottom: 1px solid #2c2428; }
     .main-container .group-conditions.level-12 {
@@ -129,6 +153,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px black;
       -o-box-shadow: inset 0px 0px 10px 0px black;
       box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-12:hover {
+        background: #2d2d2d; }
       .main-container .group-conditions.level-12 .options {
         border-bottom: 1px solid #1b1619; }
     .main-container .group-conditions.level-13 {
@@ -138,6 +164,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px black;
       -o-box-shadow: inset 0px 0px 10px 0px black;
       box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-13:hover {
+        background: #1e1e1e; }
       .main-container .group-conditions.level-13 .options {
         border-bottom: 1px solid #0a0909; }
     .main-container .group-conditions.level-14 {
@@ -147,6 +175,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px black;
       -o-box-shadow: inset 0px 0px 10px 0px black;
       box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-14:hover {
+        background: #0f0f0f; }
       .main-container .group-conditions.level-14 .options {
         border-bottom: 1px solid black; }
     .main-container .group-conditions.level-15 {
@@ -156,6 +186,8 @@
       -webkit-box-shadow: inset 0px 0px 10px 0px black;
       -o-box-shadow: inset 0px 0px 10px 0px black;
       box-shadow: inset 0px 0px 10px 0px black; }
+      .main-container .group-conditions.level-15:hover {
+        background: black; }
       .main-container .group-conditions.level-15 .options {
         border-bottom: 1px solid black; }
     .main-container .group-conditions span.glyphicon-hand-right {

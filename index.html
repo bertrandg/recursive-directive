@@ -57,7 +57,7 @@
                     <button ng-click="addElement('criterion')" class="btn btn-xs btn-primary">+CRITERE</button>
                     <button ng-click="addElement('segment')" class="btn btn-xs btn-primary">+SEGMENT</button>
                     <button ng-click="addElement('group')" class="btn btn-xs btn-primary">+GROUP</button>
-                    <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="level > 1">DELETE</button>
+                    <button ng-click="deletePlease({id: data.id})" class="btn btn-xs btn-danger align-right" ng-if="level > 1"><span class="glyphicon glyphicon-trash"></span></button>
                     <button ng-click="duplicatePlease({id: data.id})" class="btn btn-xs btn-primary align-right" ng-if="level > 1"><span class="glyphicon glyphicon-tags"></span></button>
                 </div>
                 <ul ng-show="data.elements.length > 0">
