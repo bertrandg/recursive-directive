@@ -135,13 +135,13 @@ app.directive('segmentBuilderCriterion', function() {
             deletePlease: '&'
         },
         template:  '<div class="condition form-inline">\
-                        <dp-selector data="data.criterion"></dp-selector>\
-                        <dp-operator data="data.operator"></dp-operator>\
-                        <dp-value data="data.value"></dp-value>\
-                        <dp-mode data="data.mode"></dp-mode>\
-                        <dp-threshold data1="data.thresholdValue" data2="data.thresholdUnit" ng-show="showThreshold()"></dp-threshold>\
-                        <dp-recency data="data.recency"></dp-recency>\
-                        <element-price data="data.criterion.price"></element-price>\
+                        <sb-criterion-selector data="data.criterion"></sb-criterion-selector>\
+                        <sb-criterion-operator data="data.operator"></sb-criterion-operator>\
+                        <sb-criterion-value data="data.value"></sb-criterion-value>\
+                        <sb-criterion-mode data="data.mode"></sb-criterion-mode>\
+                        <sb-criterion-threshold data1="data.thresholdValue" data2="data.thresholdUnit" ng-show="showThreshold()"></sb-criterion-threshold>\
+                        <sb-criterion-recency data="data.recency"></sb-criterion-recency>\
+                        <sb-element-price data="data.criterion.price"></sb-element-price>\
                         <button ng-click="deletePlease({id: data.id})" class="btn btn-sm btn-danger align-right"><span class="glyphicon glyphicon-trash"></span></button>\
                         <button ng-click="duplicatePlease({id: data.id})" class="btn btn-sm btn-primary align-right"><span class="glyphicon glyphicon-tags"></span></button>\
                     </div>',
@@ -156,7 +156,7 @@ app.directive('segmentBuilderCriterion', function() {
 });
 
 
-app.directive('dpSelector', function() {
+app.directive('sbCriterionSelector', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -171,7 +171,7 @@ app.directive('dpSelector', function() {
     };
 });
 
-app.directive('dpOperator', function() {
+app.directive('sbCriterionOperator', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -191,7 +191,7 @@ app.directive('dpOperator', function() {
     };
 });
 
-app.directive('dpValue', function() {
+app.directive('sbCriterionValue', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -206,7 +206,7 @@ app.directive('dpValue', function() {
     };
 });
 
-app.directive('dpMode', function() {
+app.directive('sbCriterionMode', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -226,7 +226,7 @@ app.directive('dpMode', function() {
     };
 });
 
-app.directive('dpThreshold', function() {
+app.directive('sbCriterionThreshold', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -248,7 +248,7 @@ app.directive('dpThreshold', function() {
     };
 });
 
-app.directive('dpRecency', function() {
+app.directive('sbCriterionRecency', function() {
     return {
         restrict: 'E',
         replace: true,
@@ -263,7 +263,7 @@ app.directive('dpRecency', function() {
     };
 });
 
-app.directive('elementPrice', function() {
+app.directive('sbElementPrice', function() {
     return {
         restrict: 'E',
         replace: true,

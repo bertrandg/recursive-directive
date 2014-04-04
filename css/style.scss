@@ -61,7 +61,8 @@ $border_radius_custom: 4px;
                 @include box-shadow(inset 0px 0px 10px 0px darken($color_start, $darken_value_more_more));
 		        
 		        &:hover {
-	                background: darken($color_hover_start, $darken_value);
+/* 	                background: darken($color_hover_start, $darken_value); */
+                    border-color: #666666;
 		        }
                 
                 .options {
